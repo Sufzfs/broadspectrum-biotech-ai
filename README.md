@@ -120,7 +120,7 @@ Backbone RMSD Trajectory (4JF6 Active Site)
 ------------------------------------------------------
 Final Plateau RMSD: 3.39 Å
 
-Biophysical Analysis: The trajectory demonstrates initial backbone relaxation from the static rigid SVD alignment pose, stabilizing at a plateau of $3.39\text{ \AA}$. This dynamic relaxation illustrates the necessity of physics-based MD validation over static deep-learning predictions.
+Biophysical Analysis: The trajectory demonstrates initial backbone relaxation from the static rigid SVD alignment pose, stabilizing at a plateau of 3.99 Å. This dynamic relaxation illustrates the necessity of physics-based MD validation over static deep-learning predictions.
 
 
 
