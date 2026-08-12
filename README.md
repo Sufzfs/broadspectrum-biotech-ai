@@ -49,7 +49,64 @@ The architecture integrates Meta's ESMFold transformer for structural prediction
 │    • MM-GBSA Free Binding Energy (ΔG_bind)                  │
 │    • Langevin Molecular Dynamics Trajectory (OpenMM GBSA)   │
 └─────────────────────────────────────────────────────────────┘
-Mathematical Foundations1. Kabsch Singular Value Decomposition (SVD) AlignmentTo align the predicted peptide 3D coordinates ($P$) onto the target enzyme active site ($Q$), centroids $\mathbf{p}_0$ and $\mathbf{q}_0$ are computed and subtracted:$$P' = P - \mathbf{p}_0, \quad Q' = Q - \mathbf{q}_0$$The cross-covariance matrix $H$ is calculated:$$H = P'^T Q'$$Applying Singular Value Decomposition:$$H = U S V^T$$The optimal rotation matrix $R$ accounting for coordinate chirality is:$$R = V \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & \det(V U^T) \end{pmatrix} U^T$$The translational vector $T$ is defined as:$$T = \mathbf{q}_0 - R \mathbf{p}_0$$2. ADMET Biophysical Safety ConstraintsTo prevent red blood cell membrane lysis (hemolysis) and self-aggregation, candidate sequences are evaluated against the Eisenberg hydrophobic moment ($\mu_H$) equation:$$\mu_H = \frac{1}{N} \sqrt{\left( \sum_{i=1}^N H_i \sin(\delta \cdot i) \right)^2 + \left( \sum_{i=1}^N H_i \cos(\delta \cdot i) \right)^2}$$Where $H_i$ is the Eisenberg amino acid hydrophobicity value and $\delta = 100^\circ$ for an $\alpha$-helical secondary structure.Target Cationic Charge: $+2.0 \le Q_{\text{net}} \le +7.0$Solubility Upper Bound: $\langle H \rangle < 0.400$Hemolytic Limit: $\mu_H < 0.650$3. MM-GBSA Binding Free EnergyThermodynamic stability is approximated using Molecular Mechanics Generalized Born Surface Area scoring:$$\Delta G_{\text{bind}} = \Delta E_{\text{vdw}} + \Delta E_{\text{elec}} + \Delta G_{\text{solv}}$$Where:$$\Delta E_{\text{elec}} = \sum \frac{k_e q_i q_j}{\epsilon_r r_{ij}}$$$$\Delta E_{\text{vdw}} = \sum 4 \epsilon_{ij} \left[ \left( \frac{\sigma_{ij}}{r_{ij}} \right)^{12} - \left( \frac{\sigma_{ij}}{r_{ij}} \right)^6 \right]$$Validation & Experimental ResultsLead Candidate ProfileSequence: IRLFWRWWRKRLFWWIVRNet Charge (pH 7.4): $+6.0$Mean Hydrophobicity: $0.116$Hydrophobic Moment ($\mu_H$): $0.278$ADMET Safety Status: PASSED (Low toxicity risk, high aqueous solubility)
+## Mathematical Foundations
+
+### 1. Kabsch Singular Value Decomposition (SVD) Alignment
+To align the predicted peptide 3D coordinates ($P$) onto the target enzyme active site ($Q$), centroids $\mathbf{p}_0$ and $\mathbf{q}_0$ are computed and subtracted:
+
+$$P' = P - \mathbf{p}_0, \quad Q' = Q - \mathbf{q}_0$$
+
+The cross-covariance matrix $H$ is calculated:
+
+$$H = P'^T Q'$$
+
+Applying Singular Value Decomposition:
+
+$$H = U S V^T$$
+
+The optimal rotation matrix $R$ accounting for coordinate chirality is:
+
+$$R = V \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & \det(V U^T) \end{pmatrix} U^T$$
+
+The translational vector $T$ is defined as:
+
+$$T = \mathbf{q}_0 - R \mathbf{p}_0$$
+
+---
+
+### 2. ADMET Biophysical Safety Constraints
+To prevent red blood cell membrane lysis (hemolysis) and self-aggregation, candidate sequences are evaluated against the Eisenberg hydrophobic moment ($\mu_H$) equation:
+
+$$\mu_H = \frac{1}{N} \sqrt{\left( \sum_{i=1}^N H_i \sin(\delta \cdot i) \right)^2 + \left( \sum_{i=1}^N H_i \cos(\delta \cdot i) \right)^2}$$
+
+Where $H_i$ is the Eisenberg amino acid hydrophobicity value and $\delta = 100^\circ$ for an $\alpha$-helical secondary structure.
+
+* **Target Cationic Charge:** $+2.0 \le Q_{\text{net}} \le +7.0$
+* **Solubility Upper Bound:** $\langle H \rangle < 0.400$
+* **Hemolytic Limit:** $\mu_H < 0.650$
+
+---
+
+### 3. MM-GBSA Binding Free Energy
+Thermodynamic stability is approximated using Molecular Mechanics Generalized Born Surface Area scoring:
+
+$$\Delta G_{\text{bind}} = \Delta E_{\text{vdw}} + \Delta E_{\text{elec}} + \Delta G_{\text{solv}}$$
+
+Where:
+$$\Delta E_{\text{elec}} = \sum \frac{k_e q_i q_j}{\epsilon_r r_{ij}}$$
+
+$$\Delta E_{\text{vdw}} = \sum 4 \epsilon_{ij} \left[ \left( \frac{\sigma_{ij}}{r_{ij}} \right)^{12} - \left( \frac{\sigma_{ij}}{r_{ij}} \right)^6 \right]$$
+
+---
+
+## Validation & Experimental Results
+
+### Lead Candidate Profile
+* **Sequence:** `IRLFWRWWRKRLFWWIVR`
+* **Net Charge (pH 7.4):** $+6.0$
+* **Mean Hydrophobicity:** $0.116$
+* **Hydrophobic Moment ($\mu_H$):** $0.278$
+* **ADMET Safety Status:** **PASSED** (Low toxicity risk, high aqueous solubility)
 
 Dynamic Molecular Dynamics Stability (OpenMM GBSA)A Langevin dynamics simulation ($310\text{ K}$, $1.0\text{ ps}^{-1}$ friction coefficient, $2.0\text{ fs}$ timestep) was executed on the lead candidate docked to A. baumannii OXA-23 (4JF6).
 
