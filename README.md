@@ -22,7 +22,7 @@ The architecture integrates Meta's ESMFold transformer for structural prediction
 
 ## Pipeline Architecture
 
-```text
+text
 ┌─────────────────────────────────────────────────────────────┐
 │ 1. De Novo Peptide Generation & ADMET Safety Filter         │
 │    • Net Charge (+2.0 to +7.0 at pH 7.4)                    │
